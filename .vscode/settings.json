@@ -1,0 +1,13 @@
+{
+    "files.exclude": {
+        "**/package**": true,
+        "**/README**": true,
+        "**/.git**": true,
+        "**/**.config**": true,
+        "**/node_modules": true,
+        "**/ts**": true,
+        // "**/components.json**": true,
+        "**/index.html": true,
+        "**/vite-env**": true,
+    }
+}
