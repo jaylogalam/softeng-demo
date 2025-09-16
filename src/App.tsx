@@ -1,10 +1,8 @@
 // App Functions
-import "./index.css";
-import Layout from "./app/layout";
-
+import "./config/index.css";
 
 function App() {
-  return <Layout />;
+  return <></>
 }
 
 export default App;
