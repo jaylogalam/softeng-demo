@@ -1,13 +1,14 @@
-import { BookEntity } from "../domain/bookEntity.ts";
-import { BookRepository } from "../domain/bookRepository.ts";
+import type { Request, Response } from "express";
+import { BookPersistence } from "../data/bookPersistence.ts";
 
-export class GetAllBooks {
-  repository: BookRepository
-    constructor(repository: BookRepository) {
-    this.repository = repository
+export const getAllBooks = async (req: Request, res: Response) => {
+  try {
+    const repository = new BookPersistence();
+    const books = await repository.getAllBooks();
+    console.log(books)
+    res.json(books);
+  } catch (error: any) {
+    console.log(error)
+    return res.status(500).json({error: error.message});
   }
-
-  async execute(): Promise<BookEntity[]> {
-    return await this.repository.getAllBooks();
-  }
-}
+};

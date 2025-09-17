@@ -4,8 +4,8 @@ import { BookRepository } from "../domain/bookRepository.ts";
 
 export class BookPersistence implements BookRepository {
   async getAllBooks() {
-    const { data, error } = await BookProvider.from("books").select("*");
-    if (error) throw new Error(error.message);
+    const { data, error } = await BookProvider.from("books").select("*").order("title");
+    if (error) throw new Error("Hello");
 
     return data
   }
@@ -16,6 +16,6 @@ export class BookPersistence implements BookRepository {
       .update({ no_of_copies: book.no_of_copies - 1 })
       .eq("id", book.id);
 
-    if (error) throw new Error(error.message);
+    if (error) throw new Error("Hi");
   }
 }

@@ -1,13 +1,13 @@
+import type { Request, Response } from "express";
 import { BookPersistence } from "../data/bookPersistence.ts";
-import { BookProvider } from "../data/bookProvider.ts";
-import { BookEntity } from "../domain/bookEntity.ts";
 
-const checkoutBook = new BookPersistence
-
-exports.checkoutBook = async (book: BookEntity) => {
+export const checkoutBook = async (req: Request, res: Response) => {
+  const book = req.body
   try {
-    checkoutBook.checkoutBook(book)
-  } catch {
-    
+    const repository = new BookPersistence();
+    const result = await repository.checkoutBook(book);
+    return res.json(result);
+  } catch (error: any) {
+    return res.status(500).json({error: error.message})
   }
 }
