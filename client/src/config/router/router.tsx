@@ -1,4 +1,4 @@
-import CheckoutPage from "@/features/books/presentation/pages/checkoutPage";
+import CheckoutPage from "@/features/checkout/pages/CheckoutPage";
 import { Routes, Route } from "react-router-dom";
 
 function Router() {

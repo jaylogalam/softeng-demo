@@ -3,7 +3,7 @@ import { Card } from "@/components/card";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 
-function CheckoutPage() {
+function CheckoutForm() {
   return (
     <Card className="flex flex-col gap-2 p-8 w-1/6">
       <Label className="text-2xl"> Checkout Page </Label>
@@ -29,4 +29,4 @@ function CheckoutPage() {
   );
 }
 
-export default CheckoutPage;
+export default CheckoutForm;
