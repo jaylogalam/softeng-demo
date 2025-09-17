@@ -6,7 +6,7 @@
         "**/**.config**": true,
         "**/node_modules": true,
         "**/ts**": true,
-        // "**/components.json**": true,
+        "**/components.json**": true,
         "**/index.html": true,
         "**/vite-env**": true,
     }
