@@ -4,18 +4,28 @@ import { BookRepository } from "../domain/bookRepository.ts";
 
 export class BookPersistence implements BookRepository {
   async getAllBooks() {
-    const { data, error } = await BookProvider.from("books").select("*").order("title");
-    if (error) throw new Error("Hello");
+    const { data, error } = await BookProvider.from("books")
+      .select("*")
+      .order("title");
+    if (error) throw new Error(error.message);
 
-    return data
+    return data;
   }
 
   async checkoutBook(book: BookEntity) {
-    const { error } = await BookProvider
-      .from("books")
-      .update({ no_of_copies: book.no_of_copies - 1 })
-      .eq("id", book.id);
+    const { data, error } = await BookProvider.from("books")
+      .select("no_of_copies")
+      .eq("title", book.title)
+      .single();
 
-    if (error) throw new Error("Hi");
+    if (error) throw new Error(error.message);
+
+    if (data.no_of_copies <= 0) {
+      throw new Error("not available");
+    }
+
+    await BookProvider.from("books")
+      .update({ no_of_copies: data.no_of_copies - 1 })
+      .eq("title", book.title);
   }
 }
