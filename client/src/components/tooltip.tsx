@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
-import { cn } from "@/core/utils/twMerge"
+import { cn } from "@/utils/twMerge"
 
 function TooltipProvider({
   delayDuration = 0,
