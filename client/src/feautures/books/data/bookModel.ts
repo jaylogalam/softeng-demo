@@ -5,10 +5,10 @@ export class BookModel extends BookEntity {
     super(id, title, author, no_of_copies);
   }
 
-  // Convert from Supabase JSON → BookModel
+  // Convert from JSON → BookModel
   static fromJson(json: any): BookModel {
     return new BookModel(
-      Number(json.id), // ensure id is number
+      Number(json.id),
       json.title ?? "",
       json.author ?? "",
       Number(json.no_of_copies) ?? 0

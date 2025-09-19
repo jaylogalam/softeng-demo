@@ -1,18 +1,25 @@
 import { Card } from "@/components/card";
-import type { BookEntity } from "../../domain/bookEntity";
 import { Label } from "@/components/label";
 import { Button } from "@/components/button";
-import { useState } from "react";
+import { useBooks } from "../hooks/useBooks";
 
-function Books(books: BookEntity[]) {
-  const [loading, setLoading] = useState(true);
+function Books() {
+  const {
+    books,
+    booksStatus,
+    booksError,
+    checkout,
+    checkoutStatus,
+  } = useBooks();
 
-  if (loading) return <p>Loading...</p>;
+  if (booksStatus === "pending") return <p>Loading...</p>;
+
+  if (booksStatus === "error") return <p>{booksError?.message}</p>;
 
   return (
     <Card className="w-[600px] p-6 h-[50rem] overflow-y-auto">
       <ul>
-        {books.map((book) => (
+        {books!.map((book) => (
           <li key={book.id}>
             <div className="p-4 border-0 justify-between flex border-b-2 first:border-t-2 last:border-b-0">
               <div className="flex flex-col">
@@ -22,7 +29,12 @@ function Books(books: BookEntity[]) {
               <div>
                 <div className="items-center flex gap-4 h-full">
                   <Label>Avalable copies: {book.no_of_copies}</Label>
-                  <Button onClick={() => () => {}}>Checkout</Button>
+                  <Button
+                    onClick={() => checkout(book)}
+                    disabled={checkoutStatus === "pending" || book.no_of_copies === 0}
+                  >
+                    Checkout
+                  </Button>
                 </div>
               </div>
             </div>

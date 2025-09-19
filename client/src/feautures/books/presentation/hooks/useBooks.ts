@@ -1,22 +1,25 @@
-import { useEffect, useState } from "react";
+import type { BookModel } from "../../data/bookModel";
 import { BookPersistence } from "../../data/bookPersistence";
-import { BookModel } from "../../data/bookModel";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useBooks = () => {
-  const [books, setBooks] = useState<BookModel[]>();
-  const [loading, setLoading] = useState<boolean>(false);
-
   const repository = new BookPersistence();
 
-  useEffect(() => {
-    repository.getAllBooks().then((data) => {
-      setBooks(data);
-      setLoading(false);
-    });
-  }, []);
+  const { data: books, status: booksStatus, error: booksError } = useQuery({
+    queryKey: ["books"],
+    queryFn: () => repository.getAllBooks(),
+  });
+
+  const { mutate: checkout, status: checkoutStatus, error: checkoutError } = useMutation({
+    mutationFn: (book: BookModel) => repository.checkoutBook(book),
+  })
 
   return {
     books,
-    loading,
+    booksStatus,
+    booksError,
+    checkout,
+    checkoutStatus,
+    checkoutError
   };
 };
