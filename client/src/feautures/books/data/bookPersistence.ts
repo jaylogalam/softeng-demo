@@ -16,7 +16,26 @@ export class BookPersistence implements BookRepository {
     return data.map((json: any) => BookModel.fromJson(json));
   }
 
-  async checkoutBook(book: BookEntity) {}
+  async checkoutBook(book: BookEntity) {
+    const response = await fetch("http://localhost:5000/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(book),
+    });
 
-  async returnBook(book: BookEntity) {}
+    if (!response.ok) {
+      const error = await response.json();
+
+      if (error.error == "not available") {
+        alert("This book is not available right now");
+      } else {
+        alert("An error occured\n" + error.error);
+      }
+    }
+  }
+
+  async returnBook(book: BookEntity) {
+    // Return book code
+    // ...
+  }
 }

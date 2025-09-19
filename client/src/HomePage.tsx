@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Card } from "./components/card";
 import { Label } from "./components/label";
 import { Button } from "./components/button";
-import { bookDependency } from "./feautures/books/dependency";
-import type { BookEntity } from "./feautures/books/domain/bookEntity";
 import type { BookModel } from "./feautures/books/data/bookModel";
+import { BookPersistence } from "./feautures/books/data/bookPersistence";
+import { useBooks } from "./feautures/books/presentation/hooks/useBooks";
 
 interface Book {
   id: string;
@@ -16,31 +16,15 @@ export default function BooksList() {
   const [books, setBooks] = useState<BookModel[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const checkout = async (book: Book) => {
-    const res = await fetch("http://localhost:5000/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(book),
-    });
+  const { getAllBooks } = useBooks
 
-    if (!res.ok) {
-      const error = await res.json();
-
-      if (error.error == "not available") {
-        alert("This book is not available right now");
-      }
-      else {
-        alert("An error occured\n" + error.error);
-      }
-    }
-  };
-
+  const repository = new BookPersistence();
   useEffect(() => {
-    bookDependency.getAllBooks.execute().then((data) => {
+    repository.getAllBooks().then((data) => {
       console.log(data);
       setBooks(data);
       setLoading(false);
-    })
+    });
   }, []);
 
   if (loading) return <p>Loading...</p>;
@@ -65,8 +49,8 @@ export default function BooksList() {
                 </div>
               </div>
             </li>
-          
-        )})}
+          );
+        })}
       </ul>
     </Card>
   );
