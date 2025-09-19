@@ -34,7 +34,7 @@ app.get("/", async (req, res) => {
 
 // Checkout book
 app.post("/checkout", async (req, res) => {
-  const { title } = req.body;
+  const { id } = req.body;
   const database = createClient(
     supabaseUrl,
     supabaseKey
@@ -43,7 +43,7 @@ app.post("/checkout", async (req, res) => {
   const { data, error } = await database
     .from("books")
     .select("no_of_copies")
-    .eq("title", title)
+    .eq("id", id)
     .single();
   
   if (error) {
@@ -55,7 +55,34 @@ app.post("/checkout", async (req, res) => {
     await database
       .from("books")
       .update({ no_of_copies: data.no_of_copies - 1 })
-      .eq("title", title);
+      .eq("id", id);
+  }
+});
+
+// Return book
+app.post("/checkout", async (req, res) => {
+  const { id } = req.body;
+  const database = createClient(
+    supabaseUrl,
+    supabaseKey
+  )
+
+  const { data, error } = await database
+    .from("books")
+    .select("no_of_copies")
+    .eq("id", id)
+    .single();
+  
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+  if (data.no_of_copies <= 0) {
+    return res.status(400).json({ error: "not available" });
+  } else {
+    await database
+      .from("books")
+      .update({ no_of_copies: data.no_of_copies + 1 })
+      .eq("id", id);
   }
 });
 
